@@ -1,0 +1,130 @@
+---
+title: "Lab 3A: Intro to Graphing Quantitative Data"
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+cdc <- read_csv("cdc.csv")
+```
+
+In this lab, we're going to make some graphs from the `cdc` dataset. We'll use the `ggplot()` command to make these graphs.
+
+## Graphing
+
+The way `ggplot` works is by combining layers - we can define a layer that tells the plot what's on the $x$ and $y$ axis, and then another layer which might have a histogram, or a scatterplot, or a box and whisker plot. We might then add another layer with a legend, or a title.
+
+### Histograms
+
+Say we want to make a histogram of heights from the `cdc` dataset. Our $x$ axis is going to be height. The $y$ axis is going to be a count, so it's not a variable from our dataset. We define our axes using `ggplot(aes(x=height))` because the `x=height` is an "aesthetic" of the graph:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height))
+```
+
+This made a graph, but it didn't put a histogram on it because we didn't tell it we wanted a histogram - only that we wanted height to be the x-variable. We're going to *add* a histogram to it by adding a geometry to the graph, using `geom_histogram`.
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height))+
+  geom_histogram()
+```
+
+This gives us our histogram! Notice the plus sign after the ggplot command - we're adding a layer, so we use the + sign. We used the pipe, `%>%` when we did something, and then something after that.
+
+You don't have to memorize these commands! Make sure you save your R script files - you can always come back to these to remember how to do these things.
+
+1. Include a histogram in your lab write-up for a different variable. Describe the shape of the histogram.
+
+### Scatterplots
+
+To make a scatterplot, we're going to need to include both a y and an x variable. The command is going to look very similar, but instead of a `geom_histogram()` we're going to need a `geom_point()`. Let's make a scatterplot where the $x$ variable is height and the $y$ variable is weight:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height, y = weight))+
+  geom_point()
+```
+
+That looks pretty nice! Notice the similarity in this command with the histogram - we needed to specify both `x` and `y`, and the geometry was different, but the structure was the same.
+
+1. What conclusions can you make about the relationship between weight and height based on your scatterplot?
+
+### Box and Whisker Plots
+
+Box and whisker plots are going to follow a similar format, but now we'll use the `geom_boxplot()`. We only need one predictor variable for a boxplot. `ggplot` likes to put this on the $y$ axis, so we're only going to define a $y$ variable and no $x$ variable. Let's make a box and whisker plot for height:
+
+```{r}
+cdc %>% 
+  ggplot(aes(y=height))+
+  geom_boxplot()
+```
+
+We could add an $x$ variable here - this would let us make a boxplot for each of a grouping variable, like gender. We could see this like this:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x = gender, y=height))+
+  geom_boxplot()
+```
+
+1. Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable.
+
+### Groups
+
+One frequent thing that you can express is group differences. We saw this in the box and whisker plot, but we can also see this in a number of other graphs. We can start with a scatterplot, where we want to color the points by gender. The is an aesthetic property of the graph, so it's in the `aes()` along with the `x=` and `y=` parts:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x = height, y = weight, color=gender))+
+  geom_point()
+```
+
+1. Include a scatterplot of weight vs height colored by gender. What information does this graph provide to you?
+
+Histograms can be a little trickier because it can be harder to decide how to communicate what you want. One way to do this is similarly to the scatterplot, but we want to fill in bars instead of color dots, so we use `fill` instead of `color`. What are the problems with this graph?
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height, fill=gender))+
+  geom_histogram()
+```
+
+The bars are covering each other up! We can tell R to not cover up the bars of each group by telling it to have the bars 'dodge' each other:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height, fill=gender))+
+  geom_histogram(position='dodge')
+```
+
+1. Create a histogram of a different variable, with the values broken down by gender.
+
+* * *
+
+### On Your Own
+
+** Create a new R script**
+
+EDIT THIS
+
+Create a histogram of one of the other variables in the cdc dataframe. Make sure to give it nicely labeled axes and a title.
+
+Also, make a scatterplot of a different set of two variables.
+
+Make side-by-side box and whisker plot of age by gender.
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. Modified by Ted Galanthay and Matt Thomas, August 2018.
+</div>

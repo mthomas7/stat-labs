@@ -1,0 +1,131 @@
+---
+title: "Lab 4A: Foundations for statistical inference - Sampling distributions"
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+ames <- read_csv("ames.csv")
+```
+
+In this lab, we investigate the ways in which the statistics from a random sample of data can serve as point estimates for population parameters.  We're interested in formulating a *sampling distribution* of our estimate in order to learn about the properties of the estimate, such as its distribution.
+
+## The data
+
+We consider real estate data from the city of Ames, Iowa (in the dataset `ames.csv`). The details of every real estate transaction in Ames is recorded by the City Assessor's office.  Our particular focus for this lab will be all residential home sales in Ames between 2006 and 2010. This collection represents our population of interest. In this lab we would like to learn about these home sales by taking smaller samples from the full population.  
+
+We see that there are quite a few variables in the data set, enough to do a very in-depth analysis.  For this lab, we'll restrict our attention to just two of the variables: the above ground living area of the house in square feet (`LivArea`) and the sale price (`SalePrice`). 
+
+Let's look at the distribution of area in our population of home sales by calculating a few summary statistics and making a histogram.
+
+```{r}
+ames %>% 
+  select(LivArea, SalePrice) %>% 
+  summary()
+```
+
+```{r}
+ames %>% 
+  ggplot(aes(x = LivArea))+
+  geom_histogram()+
+  labs(x = "Area", title="Ground living area (square feet)")
+```
+
+1.  Describe this population distribution.  
+
+## The unknown sampling distribution
+
+In this lab we have access to the entire population, but this is rarely the case in real life.  Gathering information on an entire population is often extremely costly or impossible.  Because of this, we often take a sample of the population and use that to understand the properties of the population.
+
+If we were interested in estimating the mean living area in Ames based on a sample, we can use the following command to survey the population.
+
+```{r samp1, eval=FALSE}
+samp1 <- sample_n(ames,50)
+```
+
+This command collects a simple random sample of size 50 from the ames data and assigns this to `samp1`. This is like going into the City Assessor's database and pulling up the files on 50 random home sales. Working with these 50 files would be considerably simpler than working with all 2930 home sales.
+
+2. Describe the distribution of the variable LivArea for this sample. How does it compare to the distribution of the population?
+
+If we're interested in estimating the mean average living area in homes in Ames using the sample, our best single guess is the sample mean:
+
+```{r mean-samp1, eval=FALSE}
+samp1 %>% 
+  summarize(meanLivArea = mean(LivArea))
+```
+
+Depending on which 50 homes you selected, your estimate could be a bit above or a bit below the true population mean of 1499.69 square feet. In general, though, the sample mean turns out to be a pretty good estimate of the mean average living area, and we were able to get it by sampling less than 3\% of the population.
+
+3. Take a second sample, also of size 50, and call it `samp2`. How does the mean of `samp2` compare with the mean of `samp1`?
+
+4. Suppose we took two more samples, one of size 100 and one of size 1000. Which sample mean would you think would provide a more accurate estimate of the population mean?
+
+Not surprisingly, every time we take another random sample, we get a different sample mean.  It's useful to get a sense of just how much variability we should expect when estimating the population mean this way.
+
+The distribution of all possible sample means, called the *sampling distribution*, can help us understand this variability. In this lab, because we have access to the population, we can build up an approximation of the sampling distribution for the sample mean by repeating the above steps many times.
+
+Here we use R to take 5000 samples of size 50 from the population, calculate the mean of each sample, and store each result in a vector called `sample_means50`. This would be a tedious thing to do in real life, and would be a little tedious to write in code. The `moderndive` package has a `rep_sample_n()` function which will do this for us, though. If you haven't already install the `moderndive` package by clicking the `Packages` tab, then clicking install, and typing the name of the package. Once you have done that, or if you already installed it, find it in the list of packages, and click the check box next to it.
+
+```{r 5000 sample means, eval=FALSE}
+sample_means50 <- 
+  ames %>% 
+  rep_sample_n(size = 50, reps = 5000) %>% 
+  group_by(replicate) %>% 
+  summarize(meanLivArea = mean(LivArea))
+```
+
+We can plot these results:
+
+```{r, eval=FALSE}
+sample_means50 %>% 
+  ggplot(aes(x = meanLivArea))+
+  geom_histogram()+
+  labs(x = "Sample Mean", y = "Frequency", title = "Histogram of sample means of size 50")
+```
+
+1. Describe the distribution you get. Does it look similar to the one in this lab? Are they identical? Similar? Are there significant differences?
+
+Note: If you would like to adjust the bin width of your histogram to show a little more or less detail, you can control the number of bins by changing the `bins` argument.
+
+```{r hist-breaks, eval=FALSE}
+sample_means50 %>% 
+  ggplot(aes(x = meanLivArea))+
+  geom_histogram(bins=10)+
+  labs(x = "Sample Mean", y = "Frequency", title = "Histogram of sample means of size 50")
+```
+
+
+1. How many elements are there in `sample_means50`?  Describe the distribution of sample means, and be sure to specifically note its center.  How would you expect the distribution to change if instead we collected 50,000 sample means?
+
+* * *
+
+### On your own
+
+Open up a new R Script.
+
+So far, we have only focused on estimating the mean living area in homes in Ames.  Now you'll try to estimate the mean home price.
+
+-   Take a random sample of size 50 from `ames`. Using this sample, what is your best point estimate of the population mean of `SalePrice`?
+
+-   Since you have access to the population, simulate the approximate sampling distribution for $\bar{x}_{price}$ by taking 5000 samples from the population of size 50 and computing 5000 sample means.  Store these means in a vector called `sample_means50`. Plot the data and  describe the shape of this distribution. Based on this distribution of sample means, what would you guess the mean home price of the population to be? Finally, calculate and report the population mean.
+
+-   Change your sample size from 50 to 150, then compute 5000 sample means using the same method as above, and store these means in a new vector called `sample_means150`. Describe the shape of this 
+    distribution, and compare it to the distribution for a sample 
+    size of 50.  Based on this distribution, what would you guess to 
+    be the mean sale price of homes in Ames?
+
+-   Of the approximate sampling distributions you created from sample sizes of 50 and 150, which has a smaller range?  If we're concerned with making estimates that are more often close to the true value, would we prefer a distribution with a large or small range?  Why?
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, July 2018.
+</div>

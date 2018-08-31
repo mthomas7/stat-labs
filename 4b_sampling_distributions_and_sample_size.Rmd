@@ -1,0 +1,99 @@
+---
+title: "Lab 4B: Foundations for statistical inference - Sampling distributions and Sample Size"
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+ames <- read_csv("ames.csv")
+```
+
+## Sample size and the sampling distribution
+
+The approximate sampling distribution that we computed tells us much about estimating 
+the average living area in homes in Ames.  Because the sample mean is an 
+*unbiased estimator*, the sampling distribution is centered at the true mean average 
+living area of the the population, and the spread of the distribution 
+indicates how much variability is induced by sampling only 50 home sales.
+
+To get a sense of the effect that sample size has on our distribution, let's 
+build up two more approximate sampling distributions: one based on a sample size of 10 and 
+another based on a sample size of 100.
+
+```{r samp-10-100, eval=FALSE}
+sample_means10 <- 
+  ames %>% 
+  rep_sample_n(size = 10, reps = 5000) %>% 
+  group_by(replicate) %>% 
+  summarize(meanLivArea = mean(LivArea))
+
+sample_means100 <- 
+  ames %>% 
+  rep_sample_n(size = 100, reps = 5000) %>% 
+  group_by(replicate) %>% 
+  summarize(meanLivArea = mean(LivArea))
+```
+
+To see the effect that different sample sizes have on the histograms of sample 
+means, plot the three distributions one after the other.
+
+```{r plot-samps, eval=FALSE, tidy = FALSE}
+sample_means10 %>% 
+  ggplot(aes(x = meanLivArea))+
+  geom_histogram()
+
+sample_means50 %>% 
+  ggplot(aes(x = meanLivArea))+
+  geom_histogram()
+
+sample_means100 %>% 
+  ggplot(aes(x = meanLivArea))+
+  geom_histogram()
+```
+
+The `bins` argument specifies the number of bins used in constructing the histogram.
+
+<!-- Cut the `xlim` argument bit - maybe they look at the tick marks instead to keep the code simpler?-->
+
+6.  When the sample size is larger, what happens to the center?  the shape?  the spread?
+
+* * *
+
+### On your own
+
+Open up a new R Script.
+
+So far, we have only focused on estimating the mean living area in homes in 
+Ames.  Now you'll try to estimate the mean home price.
+
+-   Take a random sample of size 50 from `ames`. Using this sample, what is 
+    your best point estimate of the population mean of `SalePrice`?
+
+-   Since you have access to the population, simulate the approximate sampling 
+    distribution for $\bar{x}_{price}$ by taking 5000 samples from the 
+    population of size 50 and computing 5000 sample means.  Store these means 
+    in a vector called `sample_means50`. Plot the data and  describe the 
+    shape of this distribution. Based on this distribution of sample means, 
+    what would you guess the mean home price of the population to be? Finally, 
+    calculate and report the population mean.
+
+-   Change your sample size from 50 to 150, then compute 5000 sample means using the same method as above, and store these means in a new vector called `sample_means150`. Describe the shape of this 
+    distribution, and compare it to the distribution for a sample 
+    size of 50.  Based on this distribution, what would you guess to 
+    be the mean sale price of homes in Ames?
+
+-   Of the approximate sampling distributions you created from sample sizes of 50 and 150, which has a smaller range?  If we're concerned with making estimates that are more often close to the true value, would we prefer a distribution with a large or small range?  Why?
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, July 2018.
+</div>

@@ -1,0 +1,89 @@
+---
+title: "Lab 3B: Intro to Graphing Categorical Data and More Advanced Graphing"
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+cdc <- read_csv("cdc.csv")
+```
+
+In this lab, we'll look at graphing categorical variables, and start to look at what we can do to make our graphs look nicer. We'll work with the `cdc` dataset again.
+
+### Bar Graphs
+
+We can make bar graphs of categorical variables like `genhlth` to know how many of each occurred. 
+
+We will use a very similar format to the graphs in the previous lab:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x = genhlth))+
+  geom_bar()
+```
+Notice that the computer doesn't know that there is a natural order to these variables (it just uses alphabetical order by default). We can change this, but for now let's not worry about it.
+
+### Side-by-side bargraphs
+
+Just as we did with histograms, we can make bar graphs that highlight group differences. We want to fill in the bars with color, so we use the `fill` argument:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x = genhlth, fill=gender))+
+  geom_bar()
+```
+
+This can be a useful way to visualize the data. We can easily compare the total number of each general health choice, and within a choice we get some idea of the breakdown by gender. Some categories are hard to compare like the number of females in good health with the number of females in very good health. To be able to address this, we can use the position dodge, just like we did with the histogram:
+
+```{r}
+cdc %>% 
+  ggplot(aes(x = genhlth, fill=gender))+
+  geom_bar(position="dodge")
+```
+
+1. If you try to make a similar graph breaking down by smoke100 instead of gender, things won't quite work correctly. Why is this? We can solve the issue by running the following command. Why does this command fix our problem?
+```{r}
+cdc <- 
+  cdc %>% 
+  mutate(
+    smoke100 = as.factor(smoke100)
+  )
+```
+
+1. With the problem fixed, create a bar graph of general health colored by smoke100.
+
+### Labels
+
+Some of the labels in this section for the axes were a little ugly - maybe we only want to capitalize some of the words, or maybe we want something more descriptive. We can fix this by adding a new layer - the label layer is called `labs()` and there are 3 types of labels we might want: $x$, $y$, and $title$:
+
+
+```{r}
+cdc %>% 
+  ggplot(aes(x=height))+
+  geom_histogram()+
+  labs(x = "Height", y = "Count", title="Histogram of Heights from the CDC Dataset")
+```
+
+You can use this command with each and every graph you've made so far!
+
+* * * 
+
+### On Your Own
+
+EDIT THIS
+
+* 
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. Modified by Ted Galanthay and Matt Thomas, August 2018.
+</div>

@@ -1,0 +1,180 @@
+---
+title: 'Lab 6A: Inference for categorical data'
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+Maybe use http://infer.netlify.com/???
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+require(infer)
+#require(moderndive)
+atheism <- read_csv("atheism.csv")
+```
+
+In August of 2012, news outlets ranging from the [Washington
+Post](http://www.washingtonpost.com/national/on-faith/poll-shows-atheism-on-the-rise-in-the-us/2012/08/13/90020fd6-e57d-11e1-9739-eef99c5fb285_story.html) to the [Huffington
+Post](http://www.huffingtonpost.com/2012/08/14/atheism-rise-religiosity-decline-in-america_n_1777031.html)
+ran a story about the rise of atheism in America. The source for the story was 
+a poll that asked people, "Irrespective of whether you attend a place of 
+worship or not, would you say you are a religious person, not a religious 
+person or a convinced atheist?" This type of question, which asks people to 
+classify themselves in one way or another, is common in polling and generates 
+categorical data. In this lab we take a look at the atheism survey and explore 
+what's at play when making inference about population proportions using 
+categorical data.
+
+## The survey
+
+To access the press release for the poll, conducted by WIN-Gallup 
+International, click on the following link:
+
+FIXME: Link isn't working, already let openintro know
+
+*<http://www.wingia.com/web/files/richeditor/filemanager/Global_INDEX_of_Religiosity_and_Atheism_PR__6.pdf>*
+
+Take a moment to review the report then address the following questions.
+
+1.  In the first paragraph, several key findings are reported. Do these 
+    percentages appear to be *sample statistics* (derived from the data 
+    sample) or *population parameters*?
+
+2.  The title of the report is "Global Index of Religiosity and Atheism". To
+    generalize the report's findings to the global human population, what must 
+    we assume about the sampling method? Does that seem like a reasonable 
+    assumption?
+
+## The data
+
+Turn your attention to Table 6 (pages 15 and 16), which reports the
+sample size and response percentages for all 57 countries. While this is
+a useful format to summarize the data, we will base our analysis on the
+original data set of individual responses to the survey. This data is in the `atheism.csv` file. Load this data set into R.
+
+FIXME: Add link
+
+3.  What does each row of Table 6 correspond to? What does each row of 
+    `atheism` correspond to?
+
+To investigate the link between these two ways of organizing this data, take a 
+look at the estimated proportion of atheists in the United States. Towards 
+the bottom of Table 6, we see that this is 5%. We should be able to come to 
+the same number using the `atheism` data.
+
+4.  We can count the number of each response in each category:
+
+```{r}
+atheism %>% 
+  group_by(nationality) %>% 
+  count(response)
+```
+
+but this is quite difficult to read. We can first take a subset to only look at the data in the US in 2012. Using the command below, create a new dataframe called `us12` that contains only the rows in `atheism` associated with respondents to the 2012 survey from the United States. Next, calculate the proportion of atheist responses. Does it agree with the percentage in Table 6? If not, why?
+
+FIXME: How do we want to do a proportion test - we can use table() or count(), and then either pipe the table to prop.test or we can use the values from a count() and type in the numbers.
+
+```{r eval=FALSE}
+us12 <- 
+  atheism %>% 
+  filter(nationality == "United States",year == "2012")
+
+prop.test(table(us12$year,us12$response))
+```
+
+
+## Inference on proportions
+
+As was hinted at in Exercise 1, Table 6 provides *statistics*, that is, 
+calculations made from the sample of 51,927 people. What we'd like, though, is 
+insight into the population *parameters*. You answer the question, "What 
+proportion of people in your sample reported being atheists?" with a 
+statistic; while the question "What proportion of people on earth would report 
+being atheists" is answered with an estimate of the parameter.
+
+The inferential tools for estimating population proportion are analogous to 
+those used for means: the confidence interval and the 
+hypothesis test.
+
+5.  Write out the conditions for inference to construct a 95% confidence
+    interval for the proportion of atheists in the United States in 2012.
+    Are you confident all conditions are met?
+
+If the conditions for inference are reasonable, we can either calculate the standard error and construct the interval by hand, or allow the `prop.test()` function to do it for us.
+
+FIXME: NEED TO FIX BASED ON EARLIER PROP.TEST CHOICE
+```{r eval=FALSE}
+#prop.test(us12$response)
+```
+
+Inspect the outcome of each line of this code.
+
+Note that since the goal is to construct an interval estimate for a 
+proportion, it's necessary to specify what constitutes a "success", which here 
+is a response of `"atheist"` as specified in the output..
+
+Although formal confidence intervals and hypothesis tests don't show up in the 
+report, suggestions of inference appear at the bottom of page 7: "In general, 
+the error margin for surveys of this kind is $\pm$ 3-5% at 95% confidence".
+
+6.  Based on the R output, what is the margin of error for the estimate of the 
+    proportion of the proportion of atheists in US in 2012?
+
+7.  Using the `prop.test()` function, calculate confidence intervals for the 
+    proportion of atheists in 2012 in two other countries of your choice, and 
+    report the associated margins of error. Be sure to note whether the 
+    conditions for inference are met. It may be helpful to create new data 
+    sets for each of the two countries first, and then use these data sets in 
+    the `inference` function to construct the confidence intervals.
+
+
+
+* * *
+
+### On your own
+
+The question of atheism was asked by WIN-Gallup International in a similar 
+survey that was conducted in 2005. (We assume here that sample sizes have 
+remained the same.) Table 4 on page 13 of the report summarizes survey results 
+from 2005 and 2012 for 39 countries.
+
+-   Answer the following two questions using the `prop.test()` function. As 
+    always, write out the hypotheses for any tests you conduct and outline the
+    status of the conditions for inference.
+
+    **a.** Is there convincing evidence that Spain has seen a change in its 
+    atheism index between 2005 and 2012?\
+    *Hint:* Create a new data set for respondents from Spain. Form
+    confidence intervals for the true proportion of athiests in both
+    years, and determine whether they overlap.
+
+    **b.** Is there convincing evidence that the United States has seen a
+    change in its atheism index between 2005 and 2012?
+
+-   If in fact there has been no change in the atheism index in the countries 
+    listed in Table 4, in how many of those countries would you expect to 
+    detect a change (at a significance level of 0.05) simply by chance?\
+    *Hint:* Look in the textbook index under Type 1 error.
+
+-   Suppose you're hired by the local government to estimate the proportion of 
+    residents that attend a religious service on a weekly basis. According to 
+    the guidelines, the estimate must have a margin of error no greater than 
+    1% with 95% confidence. You have no idea what to expect for $p$. How many 
+    people would you have to sample to ensure that you are within the 
+    guidelines?\
+    *Hint:* Refer to your plot of the relationship between $p$ and margin of 
+    error. Do not use the data set to answer this question.
+
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. Modified by Ted Galanthay and Matt Thomas, November 2017.
+</div>
