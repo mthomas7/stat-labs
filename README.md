@@ -1,1 +1,3 @@
-# stat-labs
+# Stat-labs
+
+1. [Lab 1]
