@@ -103,11 +103,6 @@ Here are some commands you might find helpful: mean(), sd(), var(), min(), max()
 
 * Calculate the median weight and height, and compare these to the means (i.e., which is higher?).
 
-* Make a histogram of the weights and heights.  Which measure of center may be more appropriate for weights? for heights?  Explain your rationale.
-
-* The Body Mass Index (BMI) is a statistic calculated from the weight (in kg) and height (in cm) using the formula BMI= weight/(height^2).  Or, using the appropriate conversions, the BMI can be calculated from weight (in pounds) and height (in inches) using the formula BMI= 703*weight/(height^2).  You can learn more about the BMI at https://www.cdc.gov/healthyweight/assessing/bmi/index.html.   
-Plot a histogram of the BMI for the people in this data set.  Calculate the center and spread of the BMI.  Describe, using appropriate numbers, its center and spread.  Describe the shape of this distribution.  Are there any unusual features?  Do you think a bell-shaped curve would be a good model for this distribution?  Explain your reasoning.
-
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
