@@ -1,0 +1,130 @@
+---
+title: "Lab 2B: Intro to Data (part 2)"
+author: "Intro Stats"
+date: "Fall 2018"
+output:
+  html_document:
+    css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+require(tidyverse)
+cdc <- read_csv("cdc.csv")
+```
+
+In this lab, we'll continue to look at the Behavioral Risk Factor Surveillance System (BRFSS) dataset.  Go ahead and import the data, and load the tidyverse package.
+
+*Instructions:* Record your answers to the exercises and the OYO section in one word processing document.  Submit this to your instructor electronically.
+
+Recall from the previous lab that some of the variables were quantitative and some were categorical.  The categorical variables are: genhlth, exerany, hlthplan, smoke100, and gender.
+
+1. What do you notice about the possible values that the categorical variables can take?  For example, compare genhlth with hlthplan.
+
+### Numerical Summaries
+
+In the next labs, we'll learn how to represent graphically  quantitative and categorical variables.  In this lab, we'll learn how to dig deeper into the data by analyzing subgroups.
+
+#### Summarize
+
+Recall from the previous lab that if we wanted to find the mean height for everyone in the cdc dataset, we used the summarize command in this way: 
+
+```{r}
+cdc %>% 
+  summarize(avg.height = mean(height))
+```
+
+Let's say that we wanted to compare the heights of men and women in the survey. In this case, we would need to compare groups.
+
+#### Group_by
+
+The `group_by()` command lets us group our dataset by a categorical variable, like gender. If we group our dataset using `group_by()` before we summarize, we'll summarize each group. For example:
+
+```{r}
+cdc %>% 
+  group_by(gender) %>% 
+  summarize(avg.height = mean(height))
+```
+
+See how the table gives us an average height for each gender? 
+
+2. What is the average height for females?
+
+We can also group by multiple categorical variables - say we want to use both `hlthplan` and `gender`. 
+
+3. How many different groups will this give us? 
+
+If we want to group by both variables, we can put both of them in the `group_by()` command:
+
+```{r}
+cdc %>% 
+  group_by(hlthplan, gender) %>% 
+  summarize(avg.height = mean(height))
+```
+
+This can also be useful for counting the number of people in different groups:
+
+```{r}
+cdc %>% 
+  group_by(hlthplan, gender) %>% 
+  summarize(number = n())
+```
+
+4. What proportion of people in the study are female? male?
+
+
+### Making new variables
+
+You can make a new variable using the `mutate` command. For example, we might be interested in computing individuals' Body Mass Index. The Body Mass Index (BMI) is a statistic calculated from the weight (in kg) and height (in cm) using the formula BMI= weight/(height^2). Or, using the appropriate conversions, the BMI can be calculated from weight (in pounds) and height (in inches) using the formula BMI= 703*weight/(height^2). You can learn more about the BMI at https://www.cdc.gov/healthyweight/assessing/bmi/index.html.
+
+To compute this variable we can use the code:
+
+```{r}
+cdc %>% 
+  mutate(
+    BMI = 703*weight/(height^2)
+  )
+```
+While this will create the new column, it won't save it, just like running `rnorm(50)` didn't save anything unless we told it to.
+
+5. Explain what the following code does:
+
+```{r}
+cdc <- 
+  cdc %>% 
+  mutate(
+    BMI = 703*weight/(height^2)
+  )
+```
+
+
+6. Calculate the center and spread of the BMI (using your choice of measure for center and spread).
+
+* * *
+
+## On your own
+
+* What proportion of people in the study report having good (or better) health?
+
+* You can form a histogram of BMI using:
+```{r}
+cdc %>% 
+  ggplot(aes(x=BMI)) +
+  geom_histogram()
+```
+
+A BMI above 25 suggests that a person is overweight.  Using your histogram, approximate the proportion of people who are overweight.
+
+* If you were to select a person from this study at random in a way so that every person in the study had an equal probability of being chosen, then the probability that you would select someone with a health plan is equal to the proportion of people in the study who have a health plan.  (This is due to the "Law of Large Numbers" which we'll learn about later in the course.)  Assume that you select a person at random, under the conditions described above.  What is the probability that you would select a female?  What is the probability that you would select a female who smokes, exercises, and reports good (or better) health?  What is the probability that you would select a male who smokes, exercises, and reports good (or better) health?  
+*Note:* You can pipe the output from the summarize command into View().  When you do this, the table will show up as a spreadsheet, and you will be able to carry out the necessary calculations.
+
+* Provide one research question you could ask and answer using this data set.
+
+* Use the data to answer your question, and report the answer.
+
+<div id="license">
+This lab was written by Ted Galanthay and Matt Thomas, August 2018.
+</div>
