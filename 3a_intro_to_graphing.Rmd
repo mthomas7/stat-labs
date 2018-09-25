@@ -11,12 +11,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE, eval=FALSE)
 require(tidyverse)
 cdc <- read_csv("cdc.csv")
 ```
 
 In this lab, we're going to make some graphs from the `cdc` dataset. We'll use the `ggplot()` command to make these graphs.
+
+You will submit a lab write-up document as well as the R script you used to run all of your commands.
 
 ## Graphing
 
@@ -79,6 +81,8 @@ cdc %>%
 
 1. Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable.
 
+You might be in a situation where you want your box and whisker plots to be horizontal instead of vertical. To do this, make your box and whisker plot exactly like we did, but then add a `+coord_flip()` at the end to flip the variables.
+
 ### Groups
 
 One frequent thing that you can express is group differences. We saw this in the box and whisker plot, but we can also see this in a number of other graphs. We can start with a scatterplot, where we want to color the points by gender. The is an aesthetic property of the graph, so it's in the `aes()` along with the `x=` and `y=` parts:
@@ -113,15 +117,18 @@ cdc %>%
 
 ### On Your Own
 
-** Create a new R script**
+* Make a horizontally oriented box and whisker plot of age using genhlth as a grouping variable.
 
-EDIT THIS
+* Make a scatterplot of a different pair of numerical variables using genhlthas a grouping variable for color.
 
-Create a histogram of one of the other variables in the cdc dataframe. Make sure to give it nicely labeled axes and a title.
+* Consider the following code:
+```{r}
+cdc %>% 
+  ggplot(aes(x=height, fill=age))+
+  geom_histogram(position='dodge')
+```
 
-Also, make a scatterplot of a different set of two variables.
-
-Make side-by-side box and whisker plot of age by gender.
+Based on the code, does this graph show what you would have expected? If so, what does it show? If not, why not?
 
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
