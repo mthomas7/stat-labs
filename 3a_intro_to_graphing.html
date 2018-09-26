@@ -453,7 +453,7 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> gender, <span class="dt">y=</span>height))<span class="op">+</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>()</a></code></pre></div>
 <ol style="list-style-type: decimal">
-<li>Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable.</li>
+<li>Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable. (Note: If you try to use a variable like smoke100 as your grouping variable, R will complain that you are using a numerical variable as your grouping variable. You can get around this by using <code>as.factor(smoke100)</code> instead of <code>smoke100</code> to force it to use it as a categorical variable.)</li>
 </ol>
 <p>You might be in a situation where you want your box and whisker plots to be horizontal instead of vertical. To do this, make your box and whisker plot exactly like we did, but then add a <code>+coord_flip()</code> at the end to flip the variables.</p>
 </div>
@@ -483,7 +483,7 @@ $(document).ready(function () {
 <h3>On Your Own</h3>
 <ul>
 <li><p>Make a horizontally oriented box and whisker plot of age using genhlth as a grouping variable.</p></li>
-<li><p>Make a scatterplot of a different pair of numerical variables using genhlthas a grouping variable for color.</p></li>
+<li><p>Make a scatterplot of a different pair of numerical variables using genhlth a grouping variable for color.</p></li>
 <li><p>Consider the following code:</p></li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">cdc <span class="op">%&gt;%</span><span class="st"> </span></a>

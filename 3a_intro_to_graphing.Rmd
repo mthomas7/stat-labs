@@ -79,7 +79,7 @@ cdc %>%
   geom_boxplot()
 ```
 
-1. Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable.
+1. Make a box-and whisker plot for a different variable, and then make a side-by-side box-and-whisker plot for that same variable using a grouping variable. (Note: If you try to use a variable like smoke100 as your grouping variable, R will complain that you are using a numerical variable as your grouping variable. You can get around this by using `as.factor(smoke100)` instead of `smoke100` to force it to use it as a categorical variable.)
 
 You might be in a situation where you want your box and whisker plots to be horizontal instead of vertical. To do this, make your box and whisker plot exactly like we did, but then add a `+coord_flip()` at the end to flip the variables.
 
@@ -119,7 +119,7 @@ cdc %>%
 
 * Make a horizontally oriented box and whisker plot of age using genhlth as a grouping variable.
 
-* Make a scatterplot of a different pair of numerical variables using genhlthas a grouping variable for color.
+* Make a scatterplot of a different pair of numerical variables using genhlth a grouping variable for color.
 
 * Consider the following code:
 ```{r}
