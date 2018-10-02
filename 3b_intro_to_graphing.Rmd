@@ -18,6 +18,8 @@ cdc <- read_csv("cdc.csv")
 
 In this lab, we'll look at graphing categorical variables, and start to look at what we can do to make our graphs look nicer. We'll work with the `cdc` dataset again.
 
+*Instructions*: Submit your R script and a lab write-up of your answers to the exercises and the OYO section.
+
 ### Bar Graphs
 
 We can make bar graphs of categorical variables like `genhlth` to know how many of each occurred. 
@@ -29,6 +31,7 @@ cdc %>%
   ggplot(aes(x = genhlth))+
   geom_bar()
 ```
+
 Notice that the computer doesn't know that there is a natural order to these variables (it just uses alphabetical order by default). We can change this, but for now let's not worry about it.
 
 ### Side-by-side bargraphs
@@ -78,9 +81,25 @@ You can use this command with each and every graph you've made so far!
 
 ### On Your Own
 
-EDIT THIS
+* Create a side-by-side graph of smoke100 grouped by general health (with the bars dodged). How does this differ from your answer to exercise 2? How do each of the graphs present this data differently? Be sure to include a good title and axis labels.
 
-* 
+* Create two histograms of age with a grouping of genhlth - one with the groups stacked, and the other with the bars dodged. Describe what each graph tells you. Both are quite busy-looking graphs. Which do you think communicates more information to the viewer?
+
+* Let's put some of what we've done together. First, describe exactly what the following code does.
+
+```{r}
+cdc <- 
+  cdc %>% 
+  mutate(
+    genhlth = factor(genhlth,
+                     ordered=TRUE,
+                     levels = c("poor", "fair", "good", "very good", "excellent")
+    )
+  )
+```
+
+Next, make the first bar graph from this lab again. What do you notice?
+
 
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 

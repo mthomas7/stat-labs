@@ -41,7 +41,7 @@ cdc %>%
   geom_histogram()
 ```
 
-This gives us our histogram! Notice the plus sign after the ggplot command - we're adding a layer, so we use the + sign. We used the pipe, `%>%` when we did something, and then something after that.
+This gives us our histogram! Notice the plus sign after the ggplot command - we're adding a layer, so we use the + sign. We used the pipe, `%>%` then we did something, and then something after that.
 
 You don't have to memorize these commands! Make sure you save your R script files - you can always come back to these to remember how to do these things.
 
