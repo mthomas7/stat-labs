@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE, eval=FALSE)
 require(tidyverse)
 cdc <- read_csv("cdc.csv")
 ```
