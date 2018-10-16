@@ -5,3 +5,4 @@
 * [Lab 2b](./2b_intro_to_data.html)
 * [Lab 3a](./3a_intro_to_graphing.html)
 * [Lab 3b](./3b_intro_to_graphing.html)
+* [Lab 4a](./4a_sampling_distributions.html)
