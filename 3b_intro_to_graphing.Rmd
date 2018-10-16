@@ -48,7 +48,7 @@ This can be a useful way to visualize the data. We can easily compare the total 
 
 ```{r}
 cdc %>% 
-  ggplot(aes(x = genhlth, fill=gender))+
+  ggplot(aes(x = genhlth, fill=smoke100))+
   geom_bar(position="dodge")
 ```
 

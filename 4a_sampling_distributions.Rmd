@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE, eval=FALSE)
 require(tidyverse)
 ames <- read_csv("ames.csv")
 ```
@@ -39,7 +39,7 @@ ames %>%
   labs(x = "Area", title="Ground living area (square feet)")
 ```
 
-1.  Describe this population distribution.  
+1.  Describe this population distribution.
 
 ## The unknown sampling distribution
 
@@ -127,5 +127,5 @@ So far, we have only focused on estimating the mean living area in homes in Ames
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
-This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, July 2018.
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, October 2018.
 </div>
