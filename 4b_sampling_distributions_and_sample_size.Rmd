@@ -13,6 +13,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=T, results='hide', message=FALSE, warning=FALSE)
 require(tidyverse)
+require(moderndive)
 ames <- read_csv("ames.csv")
 ```
 
@@ -26,7 +27,7 @@ indicates how much variability is induced by sampling only 50 home sales.
 
 To get a sense of the effect that sample size has on our distribution, let's 
 build up two more approximate sampling distributions: one based on a sample size of 10 and 
-another based on a sample size of 100.
+another based on a sample size of 100. Make sure `tidyverse` and `moderndive` are loaded.
 
 ```{r samp-10-100, eval=FALSE}
 sample_means10 <- 
@@ -41,6 +42,8 @@ sample_means100 <-
   group_by(replicate) %>% 
   summarize(meanLivArea = mean(LivArea))
 ```
+
+Add another set of sample means, this time of size 50.
 
 To see the effect that different sample sizes have on the histograms of sample 
 means, plot the three distributions one after the other.
@@ -59,41 +62,28 @@ sample_means100 %>%
   geom_histogram()
 ```
 
-The `bins` argument specifies the number of bins used in constructing the histogram.
+(Note: The `bins` argument specifies the number of bins used in constructing the histogram.)
 
-<!-- Cut the `xlim` argument bit - maybe they look at the tick marks instead to keep the code simpler?-->
+1. Include your 3 histograms.
 
-6.  When the sample size is larger, what happens to the center?  the shape?  the spread?
+2.  As the sample size gets larger, what happens to the center?  The shape?  The spread? (Note: pay attention to the x-axis values.)
+
+3. Determine the standard deviation of the Living area for the population. How does it compare to the standard deviation of each of your sample_mean datasets. Try to come up with a formula relating them.
 
 * * *
 
 ### On your own
 
-Open up a new R Script.
+Write your commands for this section in a new R Script.
 
-So far, we have only focused on estimating the mean living area in homes in 
-Ames.  Now you'll try to estimate the mean home price.
+- Now we'll keep the sample size the same (50) but change the number of samples. Create 3 data sets: one with 100 samples of size 50, one with 5000 samples of size 50, and one with 100000 samples of size 50. State the mean and standard deviation of each of them.
 
--   Take a random sample of size 50 from `ames`. Using this sample, what is 
-    your best point estimate of the population mean of `SalePrice`?
+- How does the number of samples affect your sampling distribution? Comment on both the shape, center, and spread.
 
--   Since you have access to the population, simulate the approximate sampling 
-    distribution for $\bar{x}_{price}$ by taking 5000 samples from the 
-    population of size 50 and computing 5000 sample means.  Store these means 
-    in a vector called `sample_means50`. Plot the data and  describe the 
-    shape of this distribution. Based on this distribution of sample means, 
-    what would you guess the mean home price of the population to be? Finally, 
-    calculate and report the population mean.
-
--   Change your sample size from 50 to 150, then compute 5000 sample means using the same method as above, and store these means in a new vector called `sample_means150`. Describe the shape of this 
-    distribution, and compare it to the distribution for a sample 
-    size of 50.  Based on this distribution, what would you guess to 
-    be the mean sale price of homes in Ames?
-
--   Of the approximate sampling distributions you created from sample sizes of 50 and 150, which has a smaller range?  If we're concerned with making estimates that are more often close to the true value, would we prefer a distribution with a large or small range?  Why?
+- Summarize the ideas of this lab. We have modified the sample size when constructing a sampling distribution as well as the number of samples. How do each of them relate to the sampling distribution?
 
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
-This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, July 2018.
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.  Modified by Ted Galanthay and Matt Thomas, August 2018.
 </div>

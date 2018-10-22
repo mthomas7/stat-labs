@@ -210,7 +210,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -417,13 +417,13 @@ $(document).ready(function () {
 <p>We consider real estate data from the city of Ames, Iowa (in the dataset <code>ames.csv</code>). The details of every real estate transaction in Ames is recorded by the City Assessor’s office. Our particular focus for this lab will be all residential home sales in Ames between 2006 and 2010. This collection represents our population of interest. In this lab we would like to learn about these home sales by taking smaller samples from the full population.</p>
 <p>We see that there are quite a few variables in the data set, enough to do a very in-depth analysis. For this lab, we’ll restrict our attention to just two of the variables: the above ground living area of the house in square feet (<code>LivArea</code>) and the sale price (<code>SalePrice</code>).</p>
 <p>Let’s look at the distribution of area in our population of home sales by calculating a few summary statistics and making a histogram.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">ames <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(LivArea, SalePrice) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">ames <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> LivArea))<span class="op">+</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Area&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Ground living area (square feet)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">ames <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="st">  </span><span class="kw">select</span>(LivArea, SalePrice) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">ames <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> LivArea))<span class="op">+</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="st">  </span><span class="kw">geom_histogram</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Area&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Ground living area (square feet)&quot;</span>)</a></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Describe this population distribution.</li>
 </ol>
@@ -432,14 +432,14 @@ $(document).ready(function () {
 <h2>The unknown sampling distribution</h2>
 <p>In this lab we have access to the entire population, but this is rarely the case in real life. Gathering information on an entire population is often extremely costly or impossible. Because of this, we often take a sample of the population and use that to understand the properties of the population.</p>
 <p>If we were interested in estimating the mean living area in Ames based on a sample, we can use the following command to survey the population.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">samp1 &lt;-<span class="st"> </span><span class="kw">sample_n</span>(ames,<span class="dv">50</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">samp1 &lt;-<span class="st"> </span><span class="kw">sample_n</span>(ames,<span class="dv">50</span>)</a></code></pre></div>
 <p>This command collects a simple random sample of size 50 from the ames data and assigns this to <code>samp1</code>. This is like going into the City Assessor’s database and pulling up the files on 50 random home sales. Working with these 50 files would be considerably simpler than working with all 2930 home sales.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Describe the distribution of the variable LivArea for this sample. How does it compare to the distribution of the population?</li>
 </ol>
 <p>If we’re interested in estimating the mean average living area in homes in Ames using the sample, our best single guess is the sample mean:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">samp1 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanLivArea =</span> <span class="kw">mean</span>(LivArea))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">samp1 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanLivArea =</span> <span class="kw">mean</span>(LivArea))</a></code></pre></div>
 <p>Depending on which 50 homes you selected, your estimate could be a bit above or a bit below the true population mean of 1499.69 square feet. In general, though, the sample mean turns out to be a pretty good estimate of the mean average living area, and we were able to get it by sampling less than 3% of the population.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Take a second sample, also of size 50, and call it <code>samp2</code>. How does the mean of <code>samp2</code> compare with the mean of <code>samp1</code>?</p></li>
@@ -448,24 +448,24 @@ $(document).ready(function () {
 <p>Not surprisingly, every time we take another random sample, we get a different sample mean. It’s useful to get a sense of just how much variability we should expect when estimating the population mean this way.</p>
 <p>The distribution of all possible sample means, called the <em>sampling distribution</em>, can help us understand this variability. In this lab, because we have access to the population, we can build up an approximation of the sampling distribution for the sample mean by repeating the above steps many times.</p>
 <p>Here we use R to take 5000 samples of size 50 from the population, calculate the mean of each sample, and store each result in a vector called <code>sample_means50</code>. This would be a tedious thing to do in real life, and would be a little tedious to write in code. The <code>moderndive</code> package has a <code>rep_sample_n()</code> function which will do this for us, though. If you haven’t already install the <code>moderndive</code> package by clicking the <code>Packages</code> tab, then clicking install, and typing the name of the package. Once you have done that, or if you already installed it, find it in the list of packages, and click the check box next to it.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">sample_means50 &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>ames <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">rep_sample_n</span>(<span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">reps =</span> <span class="dv">5000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(replicate) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanLivArea =</span> <span class="kw">mean</span>(LivArea))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">sample_means50 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="st">  </span>ames <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="st">  </span><span class="kw">rep_sample_n</span>(<span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">reps =</span> <span class="dv">5000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(replicate) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanLivArea =</span> <span class="kw">mean</span>(LivArea))</a></code></pre></div>
 <p>We can plot these results:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">sample_means50 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> meanLivArea))<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Mean&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Frequency&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Histogram of sample means of size 50&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">sample_means50 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> meanLivArea))<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">geom_histogram</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Mean&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Frequency&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Histogram of sample means of size 50&quot;</span>)</a></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Describe the distribution you get. Does it look similar to the one in this lab? Are they identical? Similar? Are there significant differences?</li>
 </ol>
 <p>Note: If you would like to adjust the bin width of your histogram to show a little more or less detail, you can control the number of bins by changing the <code>bins</code> argument.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">sample_means50 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> meanLivArea))<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Mean&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Frequency&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Histogram of sample means of size 50&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">sample_means50 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> meanLivArea))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Mean&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Frequency&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Histogram of sample means of size 50&quot;</span>)</a></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>How many elements are there in <code>sample_means50</code>? Describe the distribution of sample means, and be sure to specifically note its center. How would you expect the distribution to change if instead we collected 50,000 sample means?</li>
 </ol>
