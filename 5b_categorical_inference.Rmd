@@ -1,5 +1,5 @@
 ---
-title: 'Lab 6B: Inference for categorical data and Margin of Error'
+title: 'Lab 5B: Inference for categorical data and Margin of Error'
 author: "Intro Stats"
 date: "Fall 2018"
 output:
@@ -80,9 +80,6 @@ n <- 1040
 
 phats <- do(5000)*tally(resample(c("atheist","non_atheist"),n, prob = c(p, 1-p)))[1]/n
 
-
-
-
 histogram(~atheist, main = "p = 0.1, n = 1040", xlim = c(0, 0.18), data=phats)
 ```
 
@@ -140,5 +137,5 @@ from 2005 and 2012 for 39 countries.
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
-This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. Modified by Ted Galanthay and Matt Thomas, November 2017.
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. Modified by Ted Galanthay and Matt Thomas, November 2018.
 </div>

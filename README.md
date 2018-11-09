@@ -7,3 +7,4 @@
 * [Lab 3b](./3b_intro_to_graphing.html)
 * [Lab 4a](./4a_sampling_distributions.html)
 * [Lab 4b](./4b_sampling_distributions_and_sample_size.html)
+* [Lab 5a](./5a_categorical_inference.html)
